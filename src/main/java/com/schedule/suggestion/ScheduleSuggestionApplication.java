@@ -1,12 +1,12 @@
-package com.example.flywaydemo;
+package com.schedule.suggestion;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FlywayDemoApplication {
+public class ScheduleSuggestionApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FlywayDemoApplication.class, args);
+		SpringApplication.run(ScheduleSuggestionApplication.class, args);
 	}
 }
