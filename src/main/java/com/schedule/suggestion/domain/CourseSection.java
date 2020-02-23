@@ -15,8 +15,8 @@ public class CourseSection implements Serializable {
     private Long id;
 
     @NotBlank
-    @Size(max = 10)
-    private Integer sectionNumber;
+    @Size(max = 5)
+    private String sectionName;
 
     @NotBlank
     @Size(min = 1, max = 10)
@@ -44,12 +44,12 @@ public class CourseSection implements Serializable {
         this.id = id;
     }
 
-    public Integer getSectionNumber() {
-        return sectionNumber;
+    public String getSectionName() {
+        return sectionName;
     }
 
-    public void setSectionNumber(Integer sectionNumber) {
-        this.sectionNumber = sectionNumber;
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
     }
 
     public String getTerm() {
