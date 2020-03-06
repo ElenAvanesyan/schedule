@@ -32,5 +32,8 @@ VALUES (1, 'AH'),
 INSERT INTO category(id, category_alias)
 VALUES (1, 'CS_CORE'),
        (2, 'CS_ELECTIVE'),
-       (3, 'GENED'),
-       (4, 'FND');
+       (3, 'CS_REQUIRED'),
+       (4, 'MM_ELECTIVE'),
+       (5, 'MM_REQUIRED'),
+       (6, 'GENED'),
+       (7, 'FND');

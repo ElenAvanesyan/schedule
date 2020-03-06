@@ -31,7 +31,7 @@ insert into student
     (id, first_name, last_name, id_number, username, password) 
     values (10, 'Ivor', 'Dicey', 'A67364260', 'idicey9', 'PJDnz1WSj2');
 
-# courses
+# spring courses
 
 insert into course (id, course_number, title, credit) values (1, 'FND 102', 'Freshman Seminar 2', 3);
 insert into course (id, course_number, title, credit) values (2, 'ENV 202', 'Projects in Environmental Sciences', 3);
@@ -76,7 +76,11 @@ insert into course (id, course_number, title, credit) values (40, 'ENV 170', 'Ch
 insert into course (id, course_number, title, credit) values (41, 'CSE 145', 'Geographic Information Systems', 3);
 insert into course (id, course_number, title, credit) values (42, 'CHSS 285', 'Genocide Studies and Human Rights Seminar', 3);
 insert into course (id, course_number, title, credit) values (43, 'CS 120', 'Introduction to Object-Oriented Programming', 3);
-insert into course (id, course_number, title, credit) values (44, 'CS 205', 'Database and Distributed Systems', 3);
+
+-- fall
+insert into course (id, course_number, title, credit) values (44, 'FND101', 'Freshman Seminar 1', 3);
+--
+
 insert into course (id, course_number, title, credit) values (45, 'CS 121', 'Data Structures', 3);
 insert into course (id, course_number, title, credit) values (46, 'CS 211', 'Introduction to Algorithms', 3);
 insert into course (id, course_number, title, credit) values (47, 'CS 108', 'Statistics', 3);
@@ -88,7 +92,11 @@ insert into course (id, course_number, title, credit) values (52, 'PH 201', 'Glo
 insert into course (id, course_number, title, credit) values (53, 'PSIA 103', 'Introduction to Armenian Government', 3);
 insert into course (id, course_number, title, credit) values (54, 'LAW 142', 'Introduction to Human Rights', 3);
 insert into course (id, course_number, title, credit) values (55, 'PSIA 281', 'Development Policy', 3);
+
+-- many OR prerequisites
 insert into course (id, course_number, title, credit) values (56, 'CHSS 210', 'Philosophy, Politics and Economics Seminar', 3);
+--
+
 insert into course (id, course_number, title, credit) values (57, 'ENV 130', 'Plants and Society', 3);
 insert into course (id, course_number, title, credit) values (58, 'CHSS 272', 'Comparative Religion', 3);
 insert into course (id, course_number, title, credit) values (59, 'CHSS 211', 'Great Books', 3);
@@ -106,7 +114,17 @@ insert into course (id, course_number, title, credit) values (70, 'CHSS 230', 'A
 insert into course (id, course_number, title, credit) values (71, 'CHSS 282', 'Trade', 3);
 insert into course (id, course_number, title, credit) values (72, 'LAW 160', 'Law & Justice in Popular Culture', 3);
 
-# course section
+-- fall
+insert into course (id, course_number, title, credit) values (73, 'CS 111', 'Discrete Mathematics', 3);
+insert into course (id, course_number, title, credit) values (74, 'CS 102', 'Calculus 3', 3);
+insert into course (id, course_number, title, credit) values (75, 'CS 112', 'Numerical Analysis', 3);
+insert into course (id, course_number, title, credit) values (76, 'FND 103', 'Armenian Language & Literature 1', 3);
+insert into course (id, course_number, title, credit) values (77, 'FND 221', 'Armenian History 1', 3);
+insert into course (id, course_number, title, credit) values (78, 'CS 110', 'Introduction to Computer Science', 3);
+--
+
+
+# spring course sections
 
 # FND 102
 insert into course_section (id, course_id, section_name, term, instructor_name, week_days, start_time, end_time) values (1, 1, 'A', 'Spring', 'Karayan', 'MWF', '09:30:00', '10:20:00');
@@ -223,7 +241,6 @@ insert into course_section (id, course_id, section_name, term, instructor_name, 
 insert into course_section (id, course_id, section_name, term, instructor_name, week_days, start_time, end_time) values (86, 43, 'C', 'Spring', '', 'TH', '12:00:00', '13:20:00');
 
 # no section
-insert into course_section (id, course_id, section_name, term, instructor_name, week_days, start_time, end_time) values (87, 44, '', 'Spring', '', 'TH', '09:00:00', '10:20:00');
 insert into course_section (id, course_id, section_name, term, instructor_name, week_days, start_time, end_time) values (88, 45, '', 'Spring', '', 'TH', '09:00:00', '10:20:00');
 
 # CS 211
