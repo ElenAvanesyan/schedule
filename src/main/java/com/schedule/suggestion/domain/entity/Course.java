@@ -1,4 +1,4 @@
-package com.schedule.suggestion.domain;
+package com.schedule.suggestion.domain.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -29,6 +29,15 @@ public class Course implements Serializable {
 
     @OneToMany(mappedBy = "course", targetEntity = CourseSection.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CourseSection> listOfCourseSection;
+
+    @OneToMany(mappedBy = "course", targetEntity = CourseSection.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CourseCategory> listOfCourseCategory;
+
+    @OneToMany(mappedBy = "course", targetEntity = CourseSection.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CourseCluster> listOfCourseCluster;
+
+    @OneToMany(mappedBy = "course", targetEntity = CourseSection.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CoursePrerequisite> listOfCoursePrerequisite;
 
     public Long getId() {
         return id;
@@ -68,5 +77,29 @@ public class Course implements Serializable {
 
     public Set<CourseSection> getListOfCourseSection() {
         return this.listOfCourseSection;
+    }
+
+    public void setListOfCourseCategory(Set<CourseCategory> listOfCourseCategory) {
+        this.listOfCourseCategory = listOfCourseCategory;
+    }
+
+    public Set<CourseCategory> getListOfCourseCategory() {
+        return this.listOfCourseCategory;
+    }
+
+    public void setListOfCourseCluster(Set<CourseCluster> listOfCourseCluster) {
+        this.listOfCourseCluster = listOfCourseCluster;
+    }
+
+    public Set<CourseCluster> getListOfCourseCluster() {
+        return this.listOfCourseCluster;
+    }
+
+    public void setListOfCoursePrerequisite(Set<CoursePrerequisite> listOfCoursePrerequisite) {
+        this.listOfCoursePrerequisite = listOfCoursePrerequisite;
+    }
+
+    public Set<CoursePrerequisite> getListOfCoursePrerequisite() {
+        return this.listOfCoursePrerequisite;
     }
 }
