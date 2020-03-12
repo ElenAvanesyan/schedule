@@ -1,4 +1,6 @@
-package com.schedule.suggestion.domain;
+package com.schedule.suggestion.domain.entity;
+
+import com.schedule.suggestion.domain.entity.Course;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
