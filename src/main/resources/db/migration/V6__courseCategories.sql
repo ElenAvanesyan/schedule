@@ -1,7 +1,7 @@
 CREATE TABLE course_category (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    course_id bigint(20) NOT NULL,
-    category_id bigint(20) NOT NULL,
+    id integer(20) NOT NULL AUTO_INCREMENT,
+    course_id integer(20) NOT NULL,
+    category_id integer(20) NOT NULL,
     PRIMARY KEY (id, course_id, category_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -9,9 +9,9 @@ ALTER TABLE course_category ADD CONSTRAINT FOREIGN KEY (course_id) REFERENCES co
 ALTER TABLE course_category ADD CONSTRAINT FOREIGN KEY (category_id) REFERENCES category(id);
 
 CREATE TABLE course_cluster (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    course_id bigint(20) NOT NULL,
-    cluster_id bigint(20) NOT NULL,
+    id integer(20) NOT NULL AUTO_INCREMENT,
+    course_id integer(20) NOT NULL,
+    cluster_id integer(20) NOT NULL,
     PRIMARY KEY (id, course_id, cluster_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

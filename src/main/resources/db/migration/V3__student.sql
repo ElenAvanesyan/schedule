@@ -1,7 +1,7 @@
 DROP TABLE users;
 
 CREATE TABLE student (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
+    id integer(20) NOT NULL AUTO_INCREMENT,
     id_number varchar(10) NOT NULL,
     username varchar(100) NOT NULL,
     password varchar(100) NOT NULL,

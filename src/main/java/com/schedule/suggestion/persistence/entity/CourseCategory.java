@@ -1,11 +1,11 @@
-package com.schedule.suggestion.domain.entity;
+package com.schedule.suggestion.persistence.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "course_category")
-public class CourseCluster implements Serializable {
+public class CourseCategory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // ----------------------------------------------------------------------
@@ -20,14 +20,13 @@ public class CourseCluster implements Serializable {
     // ----------------------------------------------------------------------
     // ENTITY LINKS ( RELATIONSHIP )
     // ----------------------------------------------------------------------
-
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
     @ManyToOne
-    @JoinColumn(name = "cluster_id", referencedColumnName = "id")
-    private Cluster cluster;
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
 
     // ----------------------------------------------------------------------
     // GETTER & SETTER FOR THE KEY FIELD
@@ -41,19 +40,19 @@ public class CourseCluster implements Serializable {
         this.id = id;
     }
 
-    public Course getCourse() {
+    private Course getCourse() {
         return this.course;
     }
 
-    public void setCourse(Course course) {
+    private void setCourse(Course course) {
         this.course = course;
     }
 
-    public Cluster getCluster() {
-        return this.cluster;
+    public Category getCategory() {
+        return this.category;
     }
 
-    public void setCluster(Cluster cluster) {
-        this.cluster = cluster;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

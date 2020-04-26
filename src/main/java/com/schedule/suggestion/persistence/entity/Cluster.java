@@ -1,4 +1,4 @@
-package com.schedule.suggestion.domain.entity;
+package com.schedule.suggestion.persistence.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
