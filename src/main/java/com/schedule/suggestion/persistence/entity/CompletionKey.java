@@ -1,4 +1,4 @@
-package com.schedule.suggestion.domain.entity;
+package com.schedule.suggestion.persistence.entity;
 
 import javax.persistence.Column;
 import java.io.Serializable;
@@ -7,34 +7,34 @@ public class CompletionKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "student_id", nullable = false)
-    private Long studentId;
+    private Integer studentId;
 
     @Column(name = "course_section_id", nullable = false)
-    private Long courseSectionId;
+    private Integer courseSectionId;
 
     public CompletionKey() {
         super();
     }
 
-    public CompletionKey(Long studentId, Long courseSectionId) {
+    public CompletionKey(Integer studentId, Integer courseSectionId) {
         super();
         this.studentId = studentId;
         this.courseSectionId = courseSectionId;
     }
 
-    public Long getStudentId() {
+    public Integer getStudentId() {
         return this.studentId;
     }
 
-    public void setStudentId(Long value) {
+    public void setStudentId(Integer value) {
         this.studentId = value;
     }
 
-    public Long getCourseSectionId() {
+    public Integer getCourseSectionId() {
         return this.courseSectionId;
     }
 
-    public void setCourseSectionId(Long value) {
+    public void setCourseSectionId(Integer value) {
         this.courseSectionId = value;
     }
 }

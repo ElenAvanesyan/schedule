@@ -1,6 +1,6 @@
-package com.schedule.suggestion.domain.repositories;
+package com.schedule.suggestion.persistence.repositories;
 
-import com.schedule.suggestion.domain.entity.Student;
+import com.schedule.suggestion.persistence.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.schedule.suggestion.domain.entity;
+package com.schedule.suggestion.persistence.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,19 +19,19 @@ public class Completion implements Serializable {
         this.compositePrimaryKey = new CompletionKey();
     }
 
-    public Long getStudentId() {
+    public Integer getStudentId() {
         return this.compositePrimaryKey.getStudentId();
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(Integer studentId) {
         this.compositePrimaryKey.setStudentId(studentId);
     }
 
-    public Long getCourseSectionId() {
+    public Integer getCourseSectionId() {
         return this.compositePrimaryKey.getCourseSectionId();
     }
 
-    public void setCourseSectionId(Long courseSectionId) {
+    public void setCourseSectionId(Integer courseSectionId) {
         this.compositePrimaryKey.setCourseSectionId(courseSectionId);
     }
 }

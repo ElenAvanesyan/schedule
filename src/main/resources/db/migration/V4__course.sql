@@ -1,5 +1,5 @@
 CREATE TABLE course (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
+    id integer(20) NOT NULL AUTO_INCREMENT,
     course_number varchar(10) NOT NULL,
     title varchar(100) NOT NULL,
     credit integer NOT NULL,
@@ -9,8 +9,8 @@ CREATE TABLE course (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE course_section (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    course_id bigint(20) NOT NULL,
+    id integer(20) NOT NULL AUTO_INCREMENT,
+    course_id integer(20) NOT NULL,
     section_name varchar(5) NOT NULL,
     term varchar(10) NOT NULL,
     instructor_name varchar(30),
@@ -25,8 +25,8 @@ CREATE TABLE course_section (
 ALTER TABLE course_section ADD CONSTRAINT FOREIGN KEY (course_id) REFERENCES course(id);
 
 CREATE TABLE completion (
-    student_id bigint(20) NOT NULL,
-    course_section_id bigint(20) NOT NULL,
+    student_id integer(20) NOT NULL,
+    course_section_id integer(20) NOT NULL,
     grade double precision,
     PRIMARY KEY (student_id, course_section_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

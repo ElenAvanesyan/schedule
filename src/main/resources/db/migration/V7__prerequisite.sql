@@ -1,6 +1,6 @@
 CREATE TABLE course_prerequisite (
-    course_id bigint(20) NOT NULL,
-    prerequisite_course_id bigint(20) NOT NULL,
+    course_id integer(20) NOT NULL,
+    prerequisite_course_id integer(20) NOT NULL,
     PRIMARY KEY (course_id, prerequisite_course_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

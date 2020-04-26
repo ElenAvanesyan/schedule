@@ -1,6 +1,4 @@
-package com.schedule.suggestion.domain.entity;
-
-import com.schedule.suggestion.domain.entity.CourseSection;
+package com.schedule.suggestion.persistence.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,7 +12,7 @@ public class Student implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotBlank
     @Column(unique = true)
@@ -43,11 +41,11 @@ public class Student implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "course_section_id", referencedColumnName = "id"))
     private Set<CourseSection> listOfCourseSection;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

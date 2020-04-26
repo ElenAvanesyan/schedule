@@ -1,6 +1,4 @@
-package com.schedule.suggestion.domain.entity;
-
-import com.schedule.suggestion.domain.entity.Course;
+package com.schedule.suggestion.persistence.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,7 +12,7 @@ public class CourseSection implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotBlank
     @Size(max = 5)
@@ -38,11 +36,11 @@ public class CourseSection implements Serializable {
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -94,11 +92,11 @@ public class CourseSection implements Serializable {
         this.endTime = endTime;
     }
 
-    public void setCourse(Course course) {
+    private void setCourse(Course course) {
         this.course = course;
     }
 
-    public Course getCourse() {
+    private Course getCourse() {
         return this.course;
     }
 }
