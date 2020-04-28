@@ -27,11 +27,11 @@ public class Completion implements Serializable {
         this.compositePrimaryKey.setStudentId(studentId);
     }
 
-    public Integer getCourseSectionId() {
-        return this.compositePrimaryKey.getCourseSectionId();
+    public Integer getCourseId() {
+        return this.compositePrimaryKey.getCourseId();
     }
 
-    public void setCourseSectionId(Integer courseSectionId) {
-        this.compositePrimaryKey.setCourseSectionId(courseSectionId);
+    public void setCourseId(Integer courseId) {
+        this.compositePrimaryKey.setCourseId(courseId);
     }
 }

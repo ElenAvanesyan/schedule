@@ -9,17 +9,17 @@ public class CompletionKey implements Serializable {
     @Column(name = "student_id", nullable = false)
     private Integer studentId;
 
-    @Column(name = "course_section_id", nullable = false)
-    private Integer courseSectionId;
+    @Column(name = "course_id", nullable = false)
+    private Integer courseId;
 
     public CompletionKey() {
         super();
     }
 
-    public CompletionKey(Integer studentId, Integer courseSectionId) {
+    public CompletionKey(Integer studentId, Integer courseId) {
         super();
         this.studentId = studentId;
-        this.courseSectionId = courseSectionId;
+        this.courseId = courseId;
     }
 
     public Integer getStudentId() {
@@ -30,11 +30,11 @@ public class CompletionKey implements Serializable {
         this.studentId = value;
     }
 
-    public Integer getCourseSectionId() {
-        return this.courseSectionId;
+    public Integer getCourseId() {
+        return this.courseId;
     }
 
-    public void setCourseSectionId(Integer value) {
-        this.courseSectionId = value;
+    public void setCourseId(Integer value) {
+        this.courseId = value;
     }
 }

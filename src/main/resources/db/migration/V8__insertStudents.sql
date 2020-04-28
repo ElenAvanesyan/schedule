@@ -92,6 +92,7 @@ insert into course (id, course_number, title, credit) values (52, 'PH 201', 'Glo
 insert into course (id, course_number, title, credit) values (53, 'PSIA 103', 'Introduction to Armenian Government', 3);
 insert into course (id, course_number, title, credit) values (54, 'LAW 142', 'Introduction to Human Rights', 3);
 insert into course (id, course_number, title, credit) values (55, 'PSIA 281', 'Development Policy', 3);
+insert into course (id, course_number, title, credit) values (118, 'ENGS 121', 'Mechanics', 3);
 
 -- many OR prerequisites
 insert into course (id, course_number, title, credit) values (56, 'CHSS 210', 'Philosophy, Politics and Economics Seminar', 3);

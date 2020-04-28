@@ -38,8 +38,8 @@ public class Student implements Serializable {
     @ManyToMany(targetEntity = CourseSection.class)
     @JoinTable(name = "completion",
             joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "course_section_id", referencedColumnName = "id"))
-    private Set<CourseSection> listOfCourseSection;
+            inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
+    private Set<Course> listOfCourse;
 
     public Integer getId() {
         return id;
@@ -89,11 +89,11 @@ public class Student implements Serializable {
         this.lastName = lastName;
     }
 
-    public void setListOfCourseSection(Set<CourseSection> listOfCourseSection) {
-        this.listOfCourseSection = listOfCourseSection;
+    public void setListOfCourse(Set<Course> listOfCourse) {
+        this.listOfCourse = listOfCourse;
     }
 
-    public Set<CourseSection> getListOfCourseSection() {
-        return this.listOfCourseSection;
+    public Set<Course> getListOfCourse() {
+        return this.listOfCourse;
     }
 }

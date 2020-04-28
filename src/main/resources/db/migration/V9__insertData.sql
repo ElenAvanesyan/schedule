@@ -104,6 +104,7 @@ insert into course_prerequisite (course_id, prerequisite_course_id) values (46, 
 insert into course_prerequisite (course_id, prerequisite_course_id) values (47, 6);
 insert into course_prerequisite (course_id, prerequisite_course_id) values (48, 45);
 insert into course_prerequisite (course_id, prerequisite_course_id) values (49, 45);
+insert into course_prerequisite (course_id, prerequisite_course_id) values (118, 12);
 
 # course clusters
 insert into course_cluster (course_id, cluster_id) values (2, 7);

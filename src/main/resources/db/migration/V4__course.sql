@@ -26,10 +26,10 @@ ALTER TABLE course_section ADD CONSTRAINT FOREIGN KEY (course_id) REFERENCES cou
 
 CREATE TABLE completion (
     student_id integer(20) NOT NULL,
-    course_section_id integer(20) NOT NULL,
+    course_id integer(20) NOT NULL,
     grade double precision,
-    PRIMARY KEY (student_id, course_section_id)
+    PRIMARY KEY (student_id, course_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE completion ADD CONSTRAINT FOREIGN KEY (student_id) REFERENCES student(id);
-ALTER TABLE completion ADD CONSTRAINT FOREIGN KEY (course_section_id) REFERENCES course_section(id);
+ALTER TABLE completion ADD CONSTRAINT FOREIGN KEY (course_id) REFERENCES course(id);
