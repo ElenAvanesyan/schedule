@@ -1,6 +1,7 @@
 package com.schedule.suggestion.service.dto;
 
 import com.schedule.suggestion.persistence.entity.Course;
+import com.schedule.suggestion.persistence.entity.CoursePrerequisite;
 import com.schedule.suggestion.persistence.entity.CourseSection;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class CourseDto {
     private List<CourseSectionDto> courseSections;
     private List<CourseClusterDto> courseClusters;
     private List<CourseCategoryDto> courseCategories;
+    private List<CoursePrerequisiteDto> coursePrerequisites;
 
 
     public Integer getId() {
@@ -74,6 +76,14 @@ public class CourseDto {
         this.courseCategories = courseCategories;
     }
 
+    public List<CoursePrerequisiteDto> getCoursePrerequisites() {
+        return coursePrerequisites;
+    }
+
+    public void setCoursePrerequisites(List<CoursePrerequisiteDto> coursePrerequisites) {
+        this.coursePrerequisites = coursePrerequisites;
+    }
+
 
     public static CourseDto mapEntityToDto(Course entity) {
         if (entity == null) {
@@ -88,6 +98,7 @@ public class CourseDto {
         dto.setCourseSections(CourseSectionDto.mapEntitiesToDtos(entity.getListOfCourseSection()));
         dto.setCourseClusters(CourseClusterDto.mapEntitiesToDtos(entity.getListOfCourseCluster()));
         dto.setCourseCategories(CourseCategoryDto.mapEntitiesToDtos(entity.getListOfCourseCategory()));
+        dto.setCoursePrerequisites(CoursePrerequisiteDto.mapEntitiesToDtos(entity.getListOfCoursePrerequisite()));
 
         return dto;
     }
