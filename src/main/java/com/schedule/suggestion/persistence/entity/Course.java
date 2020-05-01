@@ -1,12 +1,10 @@
 package com.schedule.suggestion.persistence.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "course")
@@ -33,13 +31,13 @@ public class Course implements Serializable {
     private List<CourseSection> listOfCourseSection;
 
     @OneToMany(mappedBy = "course", targetEntity = CourseCategory.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CourseCategory> listOfCourseCategory;
+    private List<CourseCategory> listOfCourseCategory;
 
     @OneToMany(mappedBy = "course", targetEntity = CourseCluster.class, cascade = CascadeType.ALL)
     private List<CourseCluster> listOfCourseCluster;
 
-//    @OneToMany(mappedBy = "course", targetEntity = CoursePrerequisite.class, cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<CoursePrerequisite> listOfCoursePrerequisite;
+    @OneToMany(mappedBy = "course", targetEntity = CoursePrerequisite.class, cascade = CascadeType.ALL)
+    private List<CoursePrerequisite> listOfCoursePrerequisite;
 
     public Integer getId() {
         return id;
@@ -81,11 +79,11 @@ public class Course implements Serializable {
         return this.listOfCourseSection;
     }
 
-    public void setListOfCourseCategory(Set<CourseCategory> listOfCourseCategory) {
+    public void setListOfCourseCategory(List<CourseCategory> listOfCourseCategory) {
         this.listOfCourseCategory = listOfCourseCategory;
     }
 
-    public Set<CourseCategory> getListOfCourseCategory() {
+    public List<CourseCategory> getListOfCourseCategory() {
         return this.listOfCourseCategory;
     }
 
@@ -97,11 +95,11 @@ public class Course implements Serializable {
         return this.listOfCourseCluster;
     }
 
-//    public void setListOfCoursePrerequisite(Set<CoursePrerequisite> listOfCoursePrerequisite) {
-//        this.listOfCoursePrerequisite = listOfCoursePrerequisite;
-//    }
-//
-//    public Set<CoursePrerequisite> getListOfCoursePrerequisite() {
-//        return this.listOfCoursePrerequisite;
-//    }
+    public void setListOfCoursePrerequisite(List<CoursePrerequisite> listOfCoursePrerequisite) {
+        this.listOfCoursePrerequisite = listOfCoursePrerequisite;
+    }
+
+    public List<CoursePrerequisite> getListOfCoursePrerequisite() {
+        return this.listOfCoursePrerequisite;
+    }
 }

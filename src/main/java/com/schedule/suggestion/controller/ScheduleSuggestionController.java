@@ -28,4 +28,9 @@ public class ScheduleSuggestionController {
     public CourseDto getCourseByCourseNumber(@PathVariable String courseNumber) {
         return courseService.getCourseByCourseNumber(courseNumber);
     }
+
+    @RequestMapping(path = "/course/term/{term}", method = RequestMethod.GET)
+    public List<CourseDto> getCourseByTerm(@PathVariable String term) {
+        return courseService.getCourseByTerm(term);
+    }
 }

@@ -25,4 +25,9 @@ public class CourseService {
     public CourseDto getCourseByCourseNumber(String courseNumber) {
         return CourseDto.mapEntityToDto(courseRepository.findCourseByCourseNumber(courseNumber));
     }
+
+    public List<CourseDto> getCourseByTerm(String term) {
+        return CourseDto.mapEntitiesToDtos(courseRepository.findCourseByTerm(term));
+    }
+
 }
