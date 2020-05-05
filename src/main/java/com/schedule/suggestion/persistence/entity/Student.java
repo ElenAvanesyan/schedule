@@ -2,9 +2,10 @@ package com.schedule.suggestion.persistence.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "student")
@@ -14,32 +15,32 @@ public class Student implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
+    @NotNull
     @Column(unique = true)
     @Size(max = 10)
     private String idNumber;
 
-    @NotBlank
+    @NotNull
     @Column(unique = true)
     @Size(min = 1, max = 100)
     private String username;
 
-    @NotBlank
+    @NotNull
     @Size(min = 1, max = 100)
     private String password;
 
-    @NotBlank
+    @NotNull
     @Size(max = 50)
     private String firstName;
 
     @Size(max = 50)
     private String lastName;
 
-    @ManyToMany(targetEntity = CourseSection.class)
+    @ManyToMany(targetEntity = Course.class)
     @JoinTable(name = "completion",
             joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
-    private Set<Course> listOfCourse;
+    private List<Course> listOfCourse;
 
     public Integer getId() {
         return id;
@@ -89,11 +90,11 @@ public class Student implements Serializable {
         this.lastName = lastName;
     }
 
-    public void setListOfCourse(Set<Course> listOfCourse) {
+    public void setListOfCourse(List<Course> listOfCourse) {
         this.listOfCourse = listOfCourse;
     }
 
-    public Set<Course> getListOfCourse() {
+    public List<Course> getListOfCourse() {
         return this.listOfCourse;
     }
 }

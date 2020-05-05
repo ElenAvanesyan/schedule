@@ -6,12 +6,18 @@ import java.io.Serializable;
 public class CompletionKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    // ----------------------------------------------------------------------
+    // ENTITY KEY ATTRIBUTES
+    // ----------------------------------------------------------------------
     @Column(name = "student_id", nullable = false)
     private Integer studentId;
 
     @Column(name = "course_id", nullable = false)
     private Integer courseId;
 
+    // ----------------------------------------------------------------------
+    // CONSTRUCTORS
+    // ----------------------------------------------------------------------
     public CompletionKey() {
         super();
     }
@@ -22,6 +28,9 @@ public class CompletionKey implements Serializable {
         this.courseId = courseId;
     }
 
+    // ----------------------------------------------------------------------
+    // GETTERS & SETTERS FOR KEY FIELDS
+    // ----------------------------------------------------------------------
     public Integer getStudentId() {
         return this.studentId;
     }

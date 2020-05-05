@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "course")
@@ -38,6 +39,9 @@ public class Course implements Serializable {
 
     @OneToMany(mappedBy = "course", targetEntity = CoursePrerequisite.class, cascade = CascadeType.ALL)
     private List<CoursePrerequisite> listOfCoursePrerequisite;
+
+    @ManyToMany(mappedBy = "listOfCourse", targetEntity = Student.class)
+    private List<Student> listOfCourse;
 
     public Integer getId() {
         return id;
@@ -101,5 +105,13 @@ public class Course implements Serializable {
 
     public List<CoursePrerequisite> getListOfCoursePrerequisite() {
         return this.listOfCoursePrerequisite;
+    }
+
+    public List<Student> getListOfCourse() {
+        return this.listOfCourse;
+    }
+
+    public void setListOfCourse(List<Student> listOfCourse) {
+        this.listOfCourse = listOfCourse;
     }
 }
