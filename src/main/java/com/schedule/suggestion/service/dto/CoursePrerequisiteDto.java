@@ -17,7 +17,6 @@ public class CoursePrerequisiteDto {
         this.prerequisiteCourseId = prerequisiteCourseId;
     }
 
-
     public static CoursePrerequisiteDto mapEntityToDto(CoursePrerequisite entity) {
         if (entity == null) {
             return null;

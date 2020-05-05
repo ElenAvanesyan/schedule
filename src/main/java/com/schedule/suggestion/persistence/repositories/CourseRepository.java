@@ -14,6 +14,6 @@ import java.util.Set;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Course findCourseByCourseNumber(String courseNumber);
 
-    @Query("select c from Course c left join c.listOfCourseSection cs where cs.term=:term")
+    @Query("select distinct c from Course c left join c.listOfCourseSection cs where cs.term=:term")
     List<Course> findCourseByTerm(@Param("term") String term);
 }
