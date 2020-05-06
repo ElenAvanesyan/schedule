@@ -49,6 +49,11 @@ public class ScheduleSuggestionController {
         return studentService.getStudentByUsername(username);
     }
 
+    @RequestMapping(path = "/student/courses/{username}", method = RequestMethod.GET)
+    public List<CourseDto> getStudentPassedCourses(@PathVariable String username) {
+        return studentService.getStudentPassedCourses(username);
+    }
+
     @RequestMapping(path = "/capacity/{courseId}", method = RequestMethod.GET)
     public Integer getStudentByUsername(@PathVariable Integer courseId) {
         return studentService.findMaximumCourseCapacity(courseId);
