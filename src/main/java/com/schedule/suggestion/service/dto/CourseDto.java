@@ -142,4 +142,9 @@ public class CourseDto {
 
         return dtos;
     }
+
+    public enum Division {
+        LOWER,
+        UPPER
+    }
 }
