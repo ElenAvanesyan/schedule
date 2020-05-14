@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +17,27 @@ import java.util.Set;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Course findCourseByCourseNumber(String courseNumber);
 
-    @Query("select distinct c from Course c left join c.listOfCourseSection cs where cs.term=:term")
-    List<Course> findCourseByTerm(@Param("term") String term);
+    @Query("SELECT DISTINCT c FROM Course c LEFT JOIN c.listOfCourseSection cs WHERE cs.term=:term")
+    List<Course> findAllCoursesByTerm(@Param("term") String term);
+
+    @Query(value = "SELECT GROUP_CONCAT(comp.course_id ORDER BY comp.course_id ASC SEPARATOR ',')" +
+            "FROM completion comp WHERE comp.student_id=:studentId AND comp.grade > 0",
+            nativeQuery = true)
+    String getListOfPassedCourses(@Param("studentId") Integer studentId);
+
+    @Query(value = "SELECT c.* FROM course c " +
+            "LEFT JOIN course_prerequisite cp ON cp.course_id = c.id " +
+            "LEFT JOIN course_section cs on c.id = cs.course_id " +
+            "WHERE NOT FIND_IN_SET(c.id, :passedCourses) " +
+            "AND cs.term=:term AND cs.week_days=:weekDays " +
+            "AND cs.start_time >= :startTime " +
+            "AND cs.end_time <= :endTime " +
+            "GROUP BY c.id " +
+            "HAVING SUM(COALESCE(FIND_IN_SET(cp.prerequisite_course_id, :passedCourses), 0) > 0) = " +
+            "COUNT(cp.prerequisite_course_id);",
+            nativeQuery = true)
+    List<Course> getAllAvailableCoursesByStudentId(@Param("passedCourses") String passedCourses,
+                                                   @Param("term") String term, @Param("weekDays") String weekDays,
+                                                   @Param("startTime") LocalTime startTime,
+                                                   @Param("endTime") LocalTime endTime);
 }

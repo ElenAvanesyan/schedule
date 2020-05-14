@@ -28,6 +28,8 @@ public class Course implements Serializable {
     @NotNull
     private Integer credit;
 
+    private Integer priority;
+
     @OneToMany(mappedBy = "course", targetEntity = CourseSection.class, cascade = CascadeType.ALL)
     private List<CourseSection> listOfCourseSection;
 
@@ -73,6 +75,14 @@ public class Course implements Serializable {
 
     public void setCredit(Integer credit) {
         this.credit = credit;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public void setListOfCourseSection(List<CourseSection> listOfCourseSection) {

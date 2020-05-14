@@ -23,12 +23,12 @@ public class StudentService {
         return StudentDto.mapEntitiesToDtos(studentRepository.findAll());
     }
 
-    public StudentDto getStudentByUsername(String username) {
-        return StudentDto.mapEntityToDto(studentRepository.findStudentByUsername(username));
+    public StudentDto getStudentByUsername(Integer studentId) {
+        return StudentDto.mapEntityToDto(studentRepository.findStudentById(studentId));
     }
 
-    public List<CourseDto> getStudentPassedCourses(String username) {
-        return CourseDto.mapEntitiesToDtos(studentRepository.getStudentPassedCourses(username));
+    public List<CourseDto> getStudentPassedCourses(Integer studentId) {
+        return CourseDto.mapEntitiesToDtos(studentRepository.getStudentPassedCourses(studentId));
     }
 
     public Integer findMaximumCourseCapacity(Integer courseId) {
