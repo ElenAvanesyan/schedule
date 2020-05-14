@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/schedule")
-@CrossOrigin(origins = "http://localhost:4200")
+
 
 public class ScheduleSuggestionController {
     private final CourseService courseService;

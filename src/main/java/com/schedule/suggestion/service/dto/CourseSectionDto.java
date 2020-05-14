@@ -15,6 +15,7 @@ public class CourseSectionDto {
     private String weekDays;
     private LocalTime startTime;
     private LocalTime endTime;
+    private Integer courseId;
 
     public Integer getId() {
         return id;
@@ -72,6 +73,14 @@ public class CourseSectionDto {
         this.endTime = endTime;
     }
 
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
     public static CourseSectionDto mapEntityToDto(CourseSection entity) {
         if (entity == null) {
             return null;
@@ -85,6 +94,7 @@ public class CourseSectionDto {
         dto.setWeekDays(entity.getWeekDays());
         dto.setStartTime(entity.getStartTime());
         dto.setEndTime(entity.getEndTime());
+        dto.setCourseId(entity.getCourseId());
 
         return dto;
     }

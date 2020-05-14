@@ -18,6 +18,7 @@ public class CourseDto {
     private List<CourseClusterDto> courseClusters;
     private List<CourseCategoryDto> courseCategories;
     private List<CoursePrerequisiteDto> coursePrerequisites;
+    private Integer priority;
 
 
     public Integer getId() {
@@ -84,6 +85,14 @@ public class CourseDto {
         this.coursePrerequisites = coursePrerequisites;
     }
 
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
 
     public static CourseDto mapEntityToDto(Course entity) {
         if (entity == null) {
@@ -99,6 +108,7 @@ public class CourseDto {
         dto.setCourseClusters(CourseClusterDto.mapEntitiesToDtos(entity.getListOfCourseCluster()));
         dto.setCourseCategories(CourseCategoryDto.mapEntitiesToDtos(entity.getListOfCourseCategory()));
         dto.setCoursePrerequisites(CoursePrerequisiteDto.mapEntitiesToDtos(entity.getListOfCoursePrerequisite()));
+        dto.setPriority(entity.getPriority());
 
         return dto;
     }

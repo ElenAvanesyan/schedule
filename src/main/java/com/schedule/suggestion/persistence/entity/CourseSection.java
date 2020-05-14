@@ -92,6 +92,10 @@ public class CourseSection implements Serializable {
         this.endTime = endTime;
     }
 
+    public Integer getCourseId() {
+        return this.course.getId();
+    }
+
     private void setCourse(Course course) {
         this.course = course;
     }
