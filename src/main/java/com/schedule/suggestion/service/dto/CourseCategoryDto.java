@@ -62,4 +62,14 @@ public class CourseCategoryDto {
 
         return dtos;
     }
+
+    public enum Category {
+        CS_CORE,
+        CS_ELECTIVE,
+        CS_REQUIRED,
+        FND,
+        GENED,
+        MM_ELECTIVE,
+        MM_REQUIRED
+    }
 }

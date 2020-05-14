@@ -63,4 +63,10 @@ public class CourseClusterDto {
 
         return dtos;
     }
+
+    public enum Cluster {
+        AH,
+        SS,
+        QS
+    }
 }

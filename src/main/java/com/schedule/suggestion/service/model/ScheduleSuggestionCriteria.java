@@ -8,7 +8,7 @@ public class ScheduleSuggestionCriteria {
     private LocalTime preferredEndTime;
     private String preferredDays;
     private Integer numberOfCore;
-    private Integer numberOfGened;
+    private Integer numberOfGenEd;
     private Integer numberOfTrack;
 
     public String getTerm() {
@@ -51,12 +51,12 @@ public class ScheduleSuggestionCriteria {
         this.numberOfCore = numberOfCore;
     }
 
-    public Integer getNumberOfGened() {
-        return numberOfGened;
+    public Integer getNumberOfGenEd() {
+        return numberOfGenEd;
     }
 
-    public void setNumberOfGened(Integer numberOfGened) {
-        this.numberOfGened = numberOfGened;
+    public void setNumberOfGenEd(Integer numberOfGenEd) {
+        this.numberOfGenEd = numberOfGenEd;
     }
 
     public Integer getNumberOfTrack() {
