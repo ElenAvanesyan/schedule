@@ -20,6 +20,7 @@ public class CourseDto {
     private List<CoursePrerequisiteDto> coursePrerequisites;
     private Integer priority;
     private List<CourseSectionDto> filteredCourseSections;
+    private String division;
 
     public Integer getId() {
         return id;
@@ -43,6 +44,14 @@ public class CourseDto {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
     }
 
     public Integer getCredit() {
@@ -117,6 +126,7 @@ public class CourseDto {
         dto.setCourseCategories(CourseCategoryDto.mapEntitiesToDtos(entity.getListOfCourseCategory()));
         dto.setCoursePrerequisites(CoursePrerequisiteDto.mapEntitiesToDtos(entity.getListOfCoursePrerequisite()));
         dto.setPriority(entity.getPriority());
+        dto.setDivision(entity.getDivision());
 
         return dto;
     }

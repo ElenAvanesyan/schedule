@@ -30,6 +30,8 @@ public class Course implements Serializable {
 
     private Integer priority;
 
+    private String division;
+
     @OneToMany(mappedBy = "course", targetEntity = CourseSection.class, cascade = CascadeType.ALL)
     private List<CourseSection> listOfCourseSection;
 
@@ -67,6 +69,14 @@ public class Course implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
     }
 
     public Integer getCredit() {

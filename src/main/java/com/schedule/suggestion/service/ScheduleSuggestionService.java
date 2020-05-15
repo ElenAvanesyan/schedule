@@ -3,7 +3,9 @@ package com.schedule.suggestion.service;
 import com.schedule.suggestion.persistence.entity.Course;
 import com.schedule.suggestion.persistence.entity.CourseCategory;
 import com.schedule.suggestion.persistence.entity.CourseSection;
+import com.schedule.suggestion.persistence.entity.Student;
 import com.schedule.suggestion.persistence.repositories.CourseRepository;
+import com.schedule.suggestion.persistence.repositories.StudentRepository;
 import com.schedule.suggestion.service.dto.CourseCategoryDto;
 import com.schedule.suggestion.service.dto.CourseDto;
 import com.schedule.suggestion.service.dto.CourseSectionDto;
@@ -17,15 +19,19 @@ import java.util.Map.Entry;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @Transactional
 public class ScheduleSuggestionService {
     private final CourseRepository courseRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
-    public ScheduleSuggestionService(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository; }
+    public ScheduleSuggestionService(CourseRepository courseRepository, StudentRepository studentRepository) {
+        this.courseRepository = courseRepository;
+        this.studentRepository = studentRepository;
+    }
 
         // add seperate function for front end to see in which degree the person is
 
@@ -115,10 +121,6 @@ public class ScheduleSuggestionService {
                 minimumPriorityCoreCourses.stream().sorted((c1, c2) -> {
                         return c1.getFilteredCourseSections().size() < c2.getFilteredCourseSections().size() ? -1 : 1; }).collect(Collectors.toList());
 
-        Set<Entry<String, List<CourseSectionDto>>> setOfEntries;
-        Iterator<Entry<String, List<CourseSectionDto>>> iterator;
-
-        // handle case when the core course has sections on preferred and not preferred days
         for (CourseDto course: minimumPriorityCoreCourses) {
             // if only one section add it to the schedule and remove the time slot of that section from time slots
             if (course.getFilteredCourseSections().size() == 1) {
@@ -131,21 +133,7 @@ public class ScheduleSuggestionService {
                 // es pahin vorosh courser voronq unein jam menak es time slotum arden el available chen darnum
                 // hashvi arnenq hetaga maserum kodi
             } else {
-                setOfEntries = timeSlots.entrySet();
-                iterator = setOfEntries.iterator();
-                // yete uni 1ic avel section, amen hajord coursei hamar patahakanutyamb inchvor section entrel
-                while (iterator.hasNext()) {
-                    Entry<String, List<CourseSectionDto>> entry = iterator.next();
-                    List<CourseSectionDto> value = entry.getValue();
-
-                    if (value.stream().anyMatch(courseSection -> courseSection.getCourseId().equals(course.getId()))) {
-                        CourseSectionDto courseSectionDto = value.stream().filter(courseSection -> courseSection.getCourseId().equals(course.getId())).findFirst().get();
-                        schedule.add(courseSectionDto);
-                        iterator.remove();
-                        //jnjel time slot(iteratorov a linum menak es depqum, yete for-ov enq anum null pointer exception a qcum)
-                        break;
-                    }
-                }
+                fitCourseToTimeSlot(schedule, timeSlots, course);
             }
 
             if (numberOfCore == schedule.size()) {
@@ -153,25 +141,118 @@ public class ScheduleSuggestionService {
             }
         }
 
+        Integer scheduleSizeWithCoreCoursesOnly = schedule.size();
 
-//          Takes the smallest bucket
-//        Collection<List<CourseSectionDto>> courseSlots = timeSlots.values();
-//
-//        courseSlots = courseSlots.stream().sorted((v1, v2) -> {
-//            return v1.size() < v2.size() ? -1 : 1;
-//        }).collect(Collectors.toList());
+        // handle FND addition here
+//        if (!listOfFndCourse.isEmpty()) {
+//            numberOfGened = numberOfGened - listOfFndCourse.size();
+//        }
 
-//        courseSlots.stream().forEachOrdered();
+        Map<Integer, Integer> passedCourseNumbers = new HashMap<>();
 
+        if (numberOfGened > 0) {
+            List<CourseDto> passedCourses = CourseDto.mapEntitiesToDtos(studentRepository.getStudentPassedCourses(studentId));
+            List<CourseDto> passedGenedCourses = passedCourses.stream().filter(courseDto -> courseDto.getCourseCategories().stream().anyMatch(
+                    courseCategoryDto -> Objects.equals(courseCategoryDto.getCategoryAlias(), CourseCategoryDto.Category.GENED.name())
+            )).collect(Collectors.toList());
 
+            List<Integer> range = IntStream.rangeClosed(1, 9)
+                    .boxed().collect(Collectors.toList());
+            for (Integer number : range) {
+                Integer numberOfCourses = (int) passedGenedCourses.stream().filter(courseDto ->
+                        courseDto.getCourseClusters().stream().anyMatch(clusterDto -> clusterDto.getClusterId().equals(number))).count();
+                passedCourseNumbers.put(number, numberOfCourses);
+            }
 
+            Object[] passedCourseNumbersSorted = passedCourseNumbers.entrySet().toArray();
+            Arrays.sort(passedCourseNumbersSorted, (Comparator) (o1, o2) -> ((Entry<Integer, Integer>) o2).getValue()
+                    .compareTo(((Entry<Integer, Integer>) o1).getValue()));
 
+            for (Object obj : passedCourseNumbersSorted) {
+                if (schedule.size() - scheduleSizeWithCoreCoursesOnly == numberOfGened) {
+                    break;
+                }
+                Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) obj;
+                Integer key = entry.getKey();
+                Integer value = entry.getValue();
 
-//return new ArrayList<CourseDto>();
+                List<CourseDto> passedCoursesWithValue = passedGenedCourses.stream().filter(courseDto ->
+                        courseDto.getCourseClusters().stream().anyMatch(clusterDto -> clusterDto.getClusterId().equals(key))).collect(Collectors.toList());
 
+                List<CourseDto> passedLower = passedCoursesWithValue.stream().filter(courseDto ->
+                        CourseDto.Division.LOWER.name().equals(courseDto.getDivision())).collect(Collectors.toList());
 
+                List<CourseDto> passedUpper = passedCoursesWithValue.stream().filter(courseDto ->
+                        CourseDto.Division.UPPER.name().equals(courseDto.getDivision())).collect(Collectors.toList());
+
+                List<CourseDto> availableCoursesWithClusterId = listOfGenEdCourse.stream().filter(course ->
+                        course.getCourseClusters().stream().anyMatch(clusterDto -> clusterDto.getClusterId().equals(key))).collect(Collectors.toList());
+
+                List<CourseDto> availableLowerCourses = availableCoursesWithClusterId.stream().filter(course ->
+                                CourseDto.Division.LOWER.name().equals(course.getDivision())).collect(Collectors.toList());
+
+                List<CourseDto> availableUpperCourses = availableCoursesWithClusterId.stream().filter(course ->
+                                CourseDto.Division.UPPER.name().equals(course.getDivision())).collect(Collectors.toList());
+
+                if (value == 3 || value > 3) {
+                    if (passedLower.size() == 0 || passedUpper.size() == 0) {
+                        if (passedLower.size() == 0) {
+                            addCourseToSchedule(schedule, timeSlots, availableLowerCourses);
+                        }
+
+                        if (passedUpper.size() == 0) {
+                            addCourseToSchedule(schedule, timeSlots, availableUpperCourses);
+                        }
+                    }
+                }
+
+                if (value == 2) {
+                    if (passedLower.size() != 0 && passedUpper.size() != 0) {
+                        addCourseToSchedule(schedule, timeSlots, availableCoursesWithClusterId);
+                    }
+
+                    if (passedLower.size() == 0) {
+                        addCourseToSchedule(schedule, timeSlots, availableLowerCourses);
+                    }
+
+                    if (passedUpper.size() == 0) {
+                        addCourseToSchedule(schedule, timeSlots, availableUpperCourses);
+                    }
+                }
+
+                if (value == 0 || value == 1) {
+                    addCourseToSchedule(schedule, timeSlots, availableCoursesWithClusterId);
+                }
+            }
+        }
 
         return schedule;
+    }
+
+    private void addCourseToSchedule(List<CourseSectionDto> schedule, Map<String, List<CourseSectionDto>> timeSlots, List<CourseDto> availableCourses) {
+        for (CourseDto course : availableCourses) {
+            fitCourseToTimeSlot(schedule, timeSlots, course);
+        }
+    }
+
+    private void fitCourseToTimeSlot(List<CourseSectionDto> schedule, Map<String, List<CourseSectionDto>> timeSlots, CourseDto course) {
+        Set<Entry<String, List<CourseSectionDto>>> setOfEntries;
+        Iterator<Entry<String, List<CourseSectionDto>>> iterator;
+        setOfEntries = timeSlots.entrySet();
+        iterator = setOfEntries.iterator();
+        while (iterator.hasNext()) {
+            Entry<String, List<CourseSectionDto>> timeSlotEntry = iterator.next();
+            List<CourseSectionDto> timeSlotValue = timeSlotEntry.getValue();
+
+            if (timeSlotValue.stream().anyMatch(courseSection -> courseSection.getCourseId().equals(course.getId()))) {
+                CourseSectionDto courseSectionDto = timeSlotValue.stream().filter(courseSection ->
+                        courseSection.getCourseId().equals(course.getId())).findFirst().get();
+                schedule.add(courseSectionDto);
+                iterator.remove();
+                break;
+            }
+
+        }
     }
 
     public List<CourseDto> getAllAvailableCourses(Integer studentId, ScheduleSuggestionCriteria criteria) {
