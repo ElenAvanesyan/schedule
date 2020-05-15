@@ -168,11 +168,14 @@ public class ScheduleSuggestionService {
             Arrays.sort(passedCourseNumbersSorted, (Comparator) (o1, o2) -> ((Entry<Integer, Integer>) o2).getValue()
                     .compareTo(((Entry<Integer, Integer>) o1).getValue()));
 
-            for (Object obj : passedCourseNumbersSorted) {
+            List<Object> array = Arrays.asList(passedCourseNumbersSorted);
+            Iterator<Object> itr = array.iterator();
+
+            while (itr.hasNext()) {
                 if (schedule.size() - scheduleSizeWithCoreCoursesOnly == numberOfGened) {
                     break;
                 }
-                Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) obj;
+                Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) itr.next();
                 Integer key = entry.getKey();
                 Integer value = entry.getValue();
 

@@ -16,16 +16,28 @@ public interface StudentRepository extends JpaRepository<Student, Long>{
     @Query("select distinct s.listOfCourse from Student s where s.id=:studentId")
     List<Course> getStudentPassedCourses(@Param("studentId") Integer studentId);
 
-    @Query(value="select count(st.id) from Student st where " +
-            "(select count(req.prerequisite_course_id) from Course crs left join course_prerequisite req " +
-            "on req.course_id = crs.id where crs.id=:courseId and (req.course_id is null or req.prerequisite_course_id in " +
-            "(select crs2.id from completion comp join course crs2 on crs2.id = comp.course_id where comp.student_id = st.id) and " +
-            "(select comp2.grade from completion comp2 join course crs4 on crs4.id = comp2.course_id where comp2.student_id = st.id and " +
-            "comp2.course_id = req.prerequisite_course_id) > 0)) = " +
-            "(select count(req2.prerequisite_course_id) from Course crs3 left join course_prerequisite req2 on req2.course_id = crs3.id " +
-            "where crs3.id=:courseId) and " +
-            "((select comp3.course_id from completion comp3 where comp3.student_id = st.id and comp3.course_id=:courseId) is null or " +
-            "(select comp4.grade from completion comp4 where comp4.student_id = st.id and comp4.course_id=:courseId) = 0)",
+    @Query(value="SELECT count(st.id) FROM Student st WHERE " +
+            "(SELECT count(prereq.prerequisite_course_id) " +
+            "FROM Course crs LEFT JOIN course_prerequisite prereq " +
+            "ON prereq.course_id = crs.id " +
+            "WHERE crs.id=:courseId AND (prereq.course_id IS NULL OR prereq.prerequisite_course_id IN " +
+            "(SELECT crs2.id " +
+            "FROM completion comp JOIN course crs2 ON crs2.id = comp.course_id " +
+            "WHERE comp.student_id = st.id) AND " +
+            "(SELECT comp2.grade " +
+            "FROM completion comp2 JOIN course crs3 ON crs3.id = comp2.course_id " +
+            "WHERE comp2.student_id = st.id AND " +
+            "comp2.course_id = prereq.prerequisite_course_id) > 0)) = " +
+            "(SELECT count(req2.prerequisite_course_id) " +
+            "FROM Course crs4 LEFT JOIN course_prerequisite req2 ON req2.course_id = crs4.id " +
+            "WHERE crs4.id=:courseId) " +
+            "AND " +
+            "((SELECT comp3.course_id " +
+            "FROM completion comp3 " +
+            "WHERE comp3.student_id = st.id AND comp3.course_id=:courseId) IS NULL OR " +
+            "(SELECT comp4.grade " +
+            "FROM completion comp4 " +
+            "WHERE comp4.student_id = st.id AND comp4.course_id=:courseId) = 0)",
             nativeQuery = true)
     Integer findMaximumCourseCapacity(@Param("courseId") Integer courseId);
 }
