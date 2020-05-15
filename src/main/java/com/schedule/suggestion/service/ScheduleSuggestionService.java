@@ -40,12 +40,20 @@ public class ScheduleSuggestionService {
         List<CourseSectionDto> sections = new ArrayList<>();
 
         availableCourses.stream().forEach(course -> {
+            if (course.getCourseCategories().stream().anyMatch(category -> category.getCategoryAlias().equals(CourseCategoryDto.Category.CS_CORE.name()))) {
+                if (course.getCourseSections().stream().noneMatch(section -> section.getWeekDays().equals(criteria.getPreferredDays()) &&
+                        !section.getStartTime().isBefore(criteria.getPreferredStartTime()) &&
+                        !section.getEndTime().isAfter(criteria.getPreferredEndTime()))) {
+                    course.setFilteredCourseSections(course.getCourseSections());
+                    sections.addAll(course.getCourseSections());
+                }
+            }
             List<CourseSectionDto> tempSections = course.getCourseSections().stream().filter(section -> {
                 return (section.getWeekDays().equals(criteria.getPreferredDays()) &&
                         !section.getStartTime().isBefore(criteria.getPreferredStartTime()) &&
-                        !section.getEndTime().isAfter(criteria.getPreferredEndTime())) ||
-                        course.getCourseCategories().stream().anyMatch(category -> category.getCategoryAlias().equals(CourseCategoryDto.Category.CS_CORE.name()));
+                        !section.getEndTime().isAfter(criteria.getPreferredEndTime()));
             }).collect(Collectors.toList());
+            course.setFilteredCourseSections(tempSections);
             sections.addAll(tempSections);
         });
 
@@ -103,16 +111,23 @@ public class ScheduleSuggestionService {
             minimumPriorityCoreCourses.addAll(secondMinimumPriorityCoreCourses);
         }
 
+        minimumPriorityCoreCourses =
+                minimumPriorityCoreCourses.stream().sorted((c1, c2) -> {
+                        return c1.getFilteredCourseSections().size() < c2.getFilteredCourseSections().size() ? -1 : 1; }).collect(Collectors.toList());
+
         Set<Entry<String, List<CourseSectionDto>>> setOfEntries;
         Iterator<Entry<String, List<CourseSectionDto>>> iterator;
 
         // handle case when the core course has sections on preferred and not preferred days
         for (CourseDto course: minimumPriorityCoreCourses) {
             // if only one section add it to the schedule and remove the time slot of that section from time slots
-            if (course.getCourseSections().size() == 1) {
-                schedule.addAll(course.getCourseSections());
-                CourseSectionDto section = course.getCourseSections().stream().findFirst().get();
-                timeSlots.remove(section.getWeekDays()+"-"+section.getStartTime()+"-" + section.getEndTime());
+            if (course.getFilteredCourseSections().size() == 1) {
+                CourseSectionDto section = course.getFilteredCourseSections().stream().findFirst().get();
+                String key = section.getWeekDays()+"-"+section.getStartTime()+"-" + section.getEndTime();
+                if (timeSlots.containsKey(key)) {
+                    schedule.addAll(course.getFilteredCourseSections());
+                    timeSlots.remove(key);
+                }
                 // es pahin vorosh courser voronq unein jam menak es time slotum arden el available chen darnum
                 // hashvi arnenq hetaga maserum kodi
             } else {

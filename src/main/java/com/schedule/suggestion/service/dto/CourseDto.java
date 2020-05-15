@@ -19,7 +19,7 @@ public class CourseDto {
     private List<CourseCategoryDto> courseCategories;
     private List<CoursePrerequisiteDto> coursePrerequisites;
     private Integer priority;
-
+    private List<CourseSectionDto> filteredCourseSections;
 
     public Integer getId() {
         return id;
@@ -91,6 +91,14 @@ public class CourseDto {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public void setFilteredCourseSections(List<CourseSectionDto> courseSections) {
+        this.filteredCourseSections = courseSections;
+    }
+
+    public List<CourseSectionDto> getFilteredCourseSections() {
+        return filteredCourseSections;
     }
 
 
