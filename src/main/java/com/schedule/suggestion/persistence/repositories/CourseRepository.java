@@ -29,10 +29,12 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query(value = "SELECT c.* FROM course c " +
             "LEFT JOIN course_prerequisite cp ON cp.course_id = c.id " +
             "LEFT JOIN course_section cs on c.id = cs.course_id " +
+            "LEFT JOIN course_category cc on c.id = cc.course_id " +
             "WHERE NOT FIND_IN_SET(c.id, :passedCourses) " +
-            "AND cs.term=:term AND cs.week_days=:weekDays " +
+            "AND (cs.term=:term AND cs.week_days=:weekDays " +
             "AND cs.start_time >= :startTime " +
             "AND cs.end_time <= :endTime " +
+            "OR cc.category_id = 1) " +
             "GROUP BY c.id " +
             "HAVING SUM(COALESCE(FIND_IN_SET(cp.prerequisite_course_id, :passedCourses), 0) > 0) = " +
             "COUNT(cp.prerequisite_course_id);",

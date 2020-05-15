@@ -27,6 +27,8 @@ public class ScheduleSuggestionService {
     public ScheduleSuggestionService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository; }
 
+        // add seperate function for front end to see in which degree the person is
+
     public List<CourseSectionDto> generateSchedule(Integer studentId, ScheduleSuggestionCriteria criteria) {
         List<CourseSectionDto> schedule = new ArrayList<>();
         List<CourseDto> listOfCoreCourse = new ArrayList<>();
@@ -38,7 +40,10 @@ public class ScheduleSuggestionService {
 
         availableCourses.stream().forEach(course -> {
             List<CourseSectionDto> tempSections = course.getCourseSections().stream().filter(section -> {
-                return section.getWeekDays().equals(criteria.getPreferredDays()) && !section.getStartTime().isBefore(criteria.getPreferredStartTime()) && !section.getEndTime().isAfter(criteria.getPreferredEndTime());
+                return (section.getWeekDays().equals(criteria.getPreferredDays()) &&
+                        !section.getStartTime().isBefore(criteria.getPreferredStartTime()) &&
+                        !section.getEndTime().isAfter(criteria.getPreferredEndTime())) ||
+                        course.getCourseCategories().stream().anyMatch(category -> category.getCategoryAlias().equals(CourseCategoryDto.Category.CS_CORE.name()));
             }).collect(Collectors.toList());
             sections.addAll(tempSections);
         });
@@ -76,6 +81,7 @@ public class ScheduleSuggestionService {
         Integer numberOfCore = criteria.getNumberOfCore();
         Integer numberOfGened = criteria.getNumberOfGenEd();
 
+        // subtract foundation from gened number
         if (listOfCoreCourse.size() < numberOfCore) {
             // maybe keep some message for front-end in this case, and add the difference to the numberOfGened ?
         }
@@ -98,9 +104,10 @@ public class ScheduleSuggestionService {
         //also need to add scenario when uzum a aveli qich core qan kara vercni, et depqum yerevi nerqevum for-i mech, amen
         // iterationic heto knayenq yete size-y schedulei = numberOfCore, break from the for loop
 
-        Set<Entry<String, List<CourseSectionDto>>> setOfEntries = timeSlots.entrySet();
-        Iterator<Entry<String, List<CourseSectionDto>>> iterator = setOfEntries.iterator();
+        Set<Entry<String, List<CourseSectionDto>>> setOfEntries;
+        Iterator<Entry<String, List<CourseSectionDto>>> iterator;
 
+        // handle case when the core course has sections on preferred and not preferred days
         for (CourseDto course: minimumPriorityCoreCourses) {
             // if only one section add it to the schedule and remove the time slot of that section from time slots
             if (course.getCourseSections().size() == 1) {
@@ -110,6 +117,8 @@ public class ScheduleSuggestionService {
                 // es pahin vorosh courser voronq unein jam menak es time slotum arden el available chen darnum
                 // hashvi arnenq hetaga maserum kodi
             } else {
+                setOfEntries = timeSlots.entrySet();
+                iterator = setOfEntries.iterator();
                 // yete uni 1ic avel section, amen hajord coursei hamar patahakanutyamb inchvor section entrel
                 while (iterator.hasNext()) {
                     Entry<String, List<CourseSectionDto>> entry = iterator.next();
