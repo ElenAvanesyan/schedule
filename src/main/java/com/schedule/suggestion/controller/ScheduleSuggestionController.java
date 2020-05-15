@@ -4,6 +4,7 @@ import com.schedule.suggestion.service.CourseService;
 import com.schedule.suggestion.service.ScheduleSuggestionService;
 import com.schedule.suggestion.service.StudentService;
 import com.schedule.suggestion.service.dto.CourseDto;
+import com.schedule.suggestion.service.dto.CourseSectionDto;
 import com.schedule.suggestion.service.dto.StudentDto;
 import com.schedule.suggestion.service.model.ScheduleSuggestionCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,8 @@ public class ScheduleSuggestionController {
     }
 
     @RequestMapping(path = "/generate/{studentId}", method = RequestMethod.POST)
-    public List<CourseDto> generateSchedule(@PathVariable Integer studentId,
-                                            @RequestBody ScheduleSuggestionCriteria criteria) {
+    public List<CourseSectionDto> generateSchedule(@PathVariable Integer studentId,
+                                                   @RequestBody ScheduleSuggestionCriteria criteria) {
         return scheduleSuggestionService.generateSchedule(studentId, criteria);
     }
 }

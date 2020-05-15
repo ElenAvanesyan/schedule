@@ -27,7 +27,7 @@ public class ScheduleSuggestionService {
     public ScheduleSuggestionService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository; }
 
-    public List<CourseDto> generateSchedule(Integer studentId, ScheduleSuggestionCriteria criteria) {
+    public List<CourseSectionDto> generateSchedule(Integer studentId, ScheduleSuggestionCriteria criteria) {
         List<CourseSectionDto> schedule = new ArrayList<>();
         List<CourseDto> listOfCoreCourse = new ArrayList<>();
         List<CourseDto> listOfGenEdCourse = new ArrayList<>();
@@ -95,6 +95,8 @@ public class ScheduleSuggestionService {
             minimumPriorityCoreCourses.addAll(secondMinimumPriorityCoreCourses);
         }
 
+        //also need to add scenario when uzum a aveli qich core qan kara vercni, et depqum yerevi nerqevum for-i mech, amen
+        // iterationic heto knayenq yete size-y schedulei = numberOfCore, break from the for loop
 
         Set<Entry<String, List<CourseSectionDto>>> setOfEntries = timeSlots.entrySet();
         Iterator<Entry<String, List<CourseSectionDto>>> iterator = setOfEntries.iterator();
@@ -117,6 +119,7 @@ public class ScheduleSuggestionService {
                         CourseSectionDto courseSectionDto = value.stream().filter(courseSection -> courseSection.getCourseId().equals(course.getId())).findFirst().get();
                         schedule.add(courseSectionDto);
                         iterator.remove();
+                        //jnjel time slot(iteratorov a linum menak es depqum, yete for-ov enq anum null pointer exception a qcum)
                         break;
                     }
                 }
@@ -137,11 +140,11 @@ public class ScheduleSuggestionService {
 
 
 
-return new ArrayList<CourseDto>();
+//return new ArrayList<CourseDto>();
 
 
 
-//        return schedule;
+        return schedule;
     }
 
     public List<CourseDto> getAllAvailableCourses(Integer studentId, ScheduleSuggestionCriteria criteria) {
