@@ -35,6 +35,7 @@ public class ScheduleSuggestionService {
         List<CourseDto> listOfGenEdCourse = new ArrayList<>();
         List<CourseDto> listOfFndCourse = new ArrayList<>();
         List<CourseDto> availableCourses = getAllAvailableCourses(studentId, criteria);
+        List<String> messages = new ArrayList<>();
 
         List<CourseSectionDto> sections = new ArrayList<>();
 
@@ -83,7 +84,8 @@ public class ScheduleSuggestionService {
 
         // subtract foundation from gened number
         if (listOfCoreCourse.size() < numberOfCore) {
-            // maybe keep some message for front-end in this case, and add the difference to the numberOfGened ?
+            messages.add("There are no enough available core courses");
+            numberOfGened = numberOfGened + (numberOfCore - listOfCoreCourse.size());
         }
 
         List<CourseDto> minimumPriorityCoreCourses = listOfCoreCourse.stream().filter(
@@ -100,9 +102,6 @@ public class ScheduleSuggestionService {
                                             .get().getPriority() + 1)).collect(Collectors.toList());
             minimumPriorityCoreCourses.addAll(secondMinimumPriorityCoreCourses);
         }
-
-        //also need to add scenario when uzum a aveli qich core qan kara vercni, et depqum yerevi nerqevum for-i mech, amen
-        // iterationic heto knayenq yete size-y schedulei = numberOfCore, break from the for loop
 
         Set<Entry<String, List<CourseSectionDto>>> setOfEntries;
         Iterator<Entry<String, List<CourseSectionDto>>> iterator;
@@ -132,6 +131,10 @@ public class ScheduleSuggestionService {
                         break;
                     }
                 }
+            }
+
+            if (numberOfCore == schedule.size()) {
+                break;
             }
         }
 
