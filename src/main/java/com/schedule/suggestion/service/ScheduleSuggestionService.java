@@ -111,12 +111,6 @@ public class ScheduleSuggestionService {
         Integer numberOfGened = criteria.getNumberOfGenEd();
         Integer numberOfTrack= criteria.getNumberOfTrack();
 
-        // subtract foundation from gened number
-        if (listOfCoreCourse.size() < numberOfCore) {
-            messages.add("There are no enough available core courses");
-            numberOfTrack = numberOfTrack + (numberOfCore - listOfCoreCourse.size());
-        }
-
         List<CourseDto> minimumPriorityCoreCourses = listOfCoreCourse.stream().filter(
                 course -> course.getPriority()
                         .equals(listOfCoreCourse.stream().min(Comparator.comparingInt(CourseDto::getPriority))
@@ -157,6 +151,12 @@ public class ScheduleSuggestionService {
         }
 
         Integer scheduleSizeWithCoreCoursesOnly = schedule.size();
+
+        // subtract foundation from gened number
+        if (scheduleSizeWithCoreCoursesOnly < numberOfCore) {
+            messages.add("There are no enough available core courses");
+            numberOfTrack = numberOfTrack + (numberOfCore - scheduleSizeWithCoreCoursesOnly);
+        }
 
         // track courses here
 
