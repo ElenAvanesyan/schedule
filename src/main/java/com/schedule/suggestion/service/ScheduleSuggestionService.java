@@ -63,18 +63,32 @@ public class ScheduleSuggestionService {
             sections.addAll(tempSections);
         });
 
-        Map<String, List<CourseSectionDto>> timeSlots = new HashMap();
+        Map<String, List<CourseSectionDto>> timeSlotsNotSorted = new HashMap();
 
         sections.stream().forEach(section -> {
             String key = section.getWeekDays()+"-"+section.getStartTime()+"-" + section.getEndTime();
-            if (timeSlots.containsKey(key)) {
-                timeSlots.get(key).add(section);
+            if (timeSlotsNotSorted.containsKey(key)) {
+                timeSlotsNotSorted.get(key).add(section);
             } else {
                 List<CourseSectionDto> sectionsForTimeSlot = new ArrayList();
                 sectionsForTimeSlot.add(section);
-                timeSlots.put(key, sectionsForTimeSlot);
+                timeSlotsNotSorted.put(key, sectionsForTimeSlot);
             }
         });
+
+        Comparator<Entry<String, List<CourseSectionDto>>> valueComparator = (e1, e2) -> {
+            String v1 = e1.getValue().stream().findFirst().get().getStartTime().toString();
+            String v2 = e2.getValue().stream().findFirst().get().getStartTime().toString();
+            return v1.compareTo(v2);
+        };
+
+        List<Entry<String, List<CourseSectionDto>>> listOfEntries = new ArrayList<>(timeSlotsNotSorted.entrySet());
+
+        Collections.sort(listOfEntries, valueComparator);
+        LinkedHashMap<String, List<CourseSectionDto>> timeSlots = new LinkedHashMap<>(listOfEntries.size());
+         for(Entry<String, List<CourseSectionDto>> entry : listOfEntries){
+             timeSlots.put(entry.getKey(), entry.getValue());
+         }
 
 
         for (CourseDto course: availableCourses) {
@@ -95,11 +109,12 @@ public class ScheduleSuggestionService {
 
         Integer numberOfCore = criteria.getNumberOfCore();
         Integer numberOfGened = criteria.getNumberOfGenEd();
+        Integer numberOfTrack= criteria.getNumberOfTrack();
 
         // subtract foundation from gened number
         if (listOfCoreCourse.size() < numberOfCore) {
             messages.add("There are no enough available core courses");
-            numberOfGened = numberOfGened + (numberOfCore - listOfCoreCourse.size());
+            numberOfTrack = numberOfTrack + (numberOfCore - listOfCoreCourse.size());
         }
 
         List<CourseDto> minimumPriorityCoreCourses = listOfCoreCourse.stream().filter(
@@ -143,10 +158,22 @@ public class ScheduleSuggestionService {
 
         Integer scheduleSizeWithCoreCoursesOnly = schedule.size();
 
-        // handle FND addition here
-//        if (!listOfFndCourse.isEmpty()) {
-//            numberOfGened = numberOfGened - listOfFndCourse.size();
-//        }
+        // track courses here
+
+
+        if (!listOfFndCourse.isEmpty() && !criteria.getIsFoundationChecked()) {
+            messages.add("Foundation course needs to be passed");
+        }
+
+        if (criteria.getIsFoundationChecked()) {
+            if (listOfFndCourse.isEmpty()) {
+                messages.add("No foundation course available");
+            } else {
+                for (CourseDto course : listOfFndCourse) {
+                    fitCourseToTimeSlot(schedule, timeSlots, course);
+                }
+            }
+        }
 
         Map<Integer, Integer> passedCourseNumbers = new HashMap<>();
 

@@ -3,6 +3,7 @@ package com.schedule.suggestion.controller;
 import com.schedule.suggestion.service.CourseService;
 import com.schedule.suggestion.service.ScheduleSuggestionService;
 import com.schedule.suggestion.service.StudentService;
+import com.schedule.suggestion.service.dto.AuthenticationDto;
 import com.schedule.suggestion.service.dto.CourseDto;
 import com.schedule.suggestion.service.dto.CourseSectionDto;
 import com.schedule.suggestion.service.dto.StudentDto;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/schedule")
+@CrossOrigin()
 
 
 public class ScheduleSuggestionController {
@@ -47,6 +49,11 @@ public class ScheduleSuggestionController {
     @RequestMapping(path = "/student", method = RequestMethod.GET)
     public List<StudentDto> getAllStudents() {
         return studentService.getAllStudents();
+    }
+
+    @RequestMapping(path = "/student/authenticate", method = RequestMethod.POST)
+    public StudentDto authenticateStudent(@RequestBody AuthenticationDto authenticationDto) {
+        return studentService.authenticateStudent(authenticationDto);
     }
 
     @RequestMapping(path = "/student/{studentId}", method = RequestMethod.GET)

@@ -1,6 +1,8 @@
 package com.schedule.suggestion.service;
 
+import com.schedule.suggestion.persistence.entity.Student;
 import com.schedule.suggestion.persistence.repositories.StudentRepository;
+import com.schedule.suggestion.service.dto.AuthenticationDto;
 import com.schedule.suggestion.service.dto.CourseDto;
 import com.schedule.suggestion.service.dto.StudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +35,19 @@ public class StudentService {
 
     public Integer findMaximumCourseCapacity(Integer courseId) {
         return studentRepository.findMaximumCourseCapacity(courseId);
+    }
+
+    public StudentDto authenticateStudent(AuthenticationDto authenticationDto) {
+        if (authenticationDto.getUsername() == null || authenticationDto.getPassword() == null) {
+            throw new Error("Username or password missing");
+        }
+
+        Student student = studentRepository.findStudentByUsernameAndPassword(authenticationDto.getUsername(), authenticationDto.getPassword());
+
+        if (student == null) {
+            throw new Error("Username or password is incorrect");
+        }
+
+        return StudentDto.mapEntityToDto(student);
     }
 }

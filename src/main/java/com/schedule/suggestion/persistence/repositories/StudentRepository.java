@@ -13,6 +13,8 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Long>{
     Student findStudentById(Integer studentId);
 
+    Student findStudentByUsernameAndPassword(String username, String password);
+
     @Query("select distinct s.listOfCourse from Student s where s.id=:studentId")
     List<Course> getStudentPassedCourses(@Param("studentId") Integer studentId);
 

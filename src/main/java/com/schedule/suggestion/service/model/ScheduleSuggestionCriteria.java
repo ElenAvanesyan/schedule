@@ -10,6 +10,7 @@ public class ScheduleSuggestionCriteria {
     private Integer numberOfCore;
     private Integer numberOfGenEd;
     private Integer numberOfTrack;
+    private boolean isFoundationChecked;
 
     public String getTerm() {
         return term;
@@ -65,5 +66,13 @@ public class ScheduleSuggestionCriteria {
 
     public void setNumberOfTrack(Integer numberOfTrack) {
         this.numberOfTrack = numberOfTrack;
+    }
+
+    public boolean getIsFoundationChecked() {
+        return isFoundationChecked;
+    }
+
+    public void setIsFoundationChecked(boolean isFoundationChecked) {
+        this.isFoundationChecked = isFoundationChecked;
     }
 }
