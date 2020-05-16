@@ -1,9 +1,6 @@
 package com.schedule.suggestion.service;
 
-import com.schedule.suggestion.persistence.entity.Course;
-import com.schedule.suggestion.persistence.entity.CourseCategory;
 import com.schedule.suggestion.persistence.entity.CourseSection;
-import com.schedule.suggestion.persistence.entity.Student;
 import com.schedule.suggestion.persistence.repositories.CourseRepository;
 import com.schedule.suggestion.persistence.repositories.StudentRepository;
 import com.schedule.suggestion.service.dto.CourseCategoryDto;
@@ -18,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map.Entry;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,6 +39,7 @@ public class ScheduleSuggestionService {
         List<CourseDto> listOfGenEdCourse = new ArrayList<>();
         List<CourseDto> listOfFndCourse = new ArrayList<>();
         List<CourseDto> availableCourses = getAllAvailableCourses(studentId, criteria);
+        AtomicReference<String> notPreferedDays = new AtomicReference();
         List<String> messages = new ArrayList<>();
 
         List<CourseSectionDto> sections = new ArrayList<>();
@@ -50,6 +49,8 @@ public class ScheduleSuggestionService {
                 if (course.getCourseSections().stream().noneMatch(section -> section.getWeekDays().equals(criteria.getPreferredDays()) &&
                         !section.getStartTime().isBefore(criteria.getPreferredStartTime()) &&
                         !section.getEndTime().isAfter(criteria.getPreferredEndTime()))) {
+                    Optional<CourseSectionDto> courseSection = course.getCourseSections().stream().findFirst();
+                    courseSection.ifPresent(courseSectionDto -> notPreferedDays.set(courseSectionDto.getWeekDays()));
                     course.setFilteredCourseSections(course.getCourseSections());
                     sections.addAll(course.getCourseSections());
                 }
@@ -154,6 +155,12 @@ public class ScheduleSuggestionService {
         }
 
         // track courses here
+
+        if (notPreferedDays.get() != null) {
+            timeSlots.keySet().removeIf(key -> key.startsWith(notPreferedDays.get()));
+        }
+
+        // remove time slots that are not on the prefered days
 
 
         if (!listOfFndCourse.isEmpty() && !criteria.getIsFoundationChecked()) {
@@ -261,10 +268,8 @@ public class ScheduleSuggestionService {
     }
 
     private void fitCourseToTimeSlot(List<CourseSectionDto> schedule, Map<String, List<CourseSectionDto>> timeSlots, CourseDto course) {
-        Set<Entry<String, List<CourseSectionDto>>> setOfEntries;
-        Iterator<Entry<String, List<CourseSectionDto>>> iterator;
-        setOfEntries = timeSlots.entrySet();
-        iterator = setOfEntries.iterator();
+        Set<Entry<String, List<CourseSectionDto>>> setOfEntries = timeSlots.entrySet();
+        Iterator<Entry<String, List<CourseSectionDto>>> iterator = setOfEntries.iterator();
         while (iterator.hasNext()) {
             Entry<String, List<CourseSectionDto>> timeSlotEntry = iterator.next();
             List<CourseSectionDto> timeSlotValue = timeSlotEntry.getValue();
