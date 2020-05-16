@@ -116,8 +116,6 @@ public class ScheduleSuggestionService {
                         .equals(listOfCoreCourse.stream().min(Comparator.comparingInt(CourseDto::getPriority))
                                 .get().getPriority())).collect(Collectors.toList());
 
-        // es pahin menak 2 angam em arel, aysinqn yete amenacacr priorityov chka inchqan petqa,
-        // amenacacr priority + 1 ov nayi, karanq eli anenq kam chanenq chgitem, im karciqov petq chi el(arden priorityn djvar bavararvac lini eli, mi hat mapum knayenq)
         if (minimumPriorityCoreCourses.size() < numberOfCore) {
             List<CourseDto> secondMinimumPriorityCoreCourses = listOfCoreCourse.stream().filter(
                     course -> course.getPriority()
@@ -139,8 +137,6 @@ public class ScheduleSuggestionService {
                     schedule.addAll(course.getFilteredCourseSections());
                     timeSlots.remove(key);
                 }
-                // es pahin vorosh courser voronq unein jam menak es time slotum arden el available chen darnum
-                // hashvi arnenq hetaga maserum kodi
             } else {
                 fitCourseToTimeSlot(schedule, timeSlots, course);
             }
@@ -152,7 +148,6 @@ public class ScheduleSuggestionService {
 
         Integer scheduleSizeWithCoreCoursesOnly = schedule.size();
 
-        // subtract foundation from gened number
         if (scheduleSizeWithCoreCoursesOnly < numberOfCore) {
             messages.add("There are no enough available core courses");
             numberOfTrack = numberOfTrack + (numberOfCore - scheduleSizeWithCoreCoursesOnly);
