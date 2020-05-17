@@ -370,9 +370,9 @@ public class ScheduleSuggestionService {
         return courseRepository.getListOfPassedCourses(studentId);
     }
 
-    public List<CourseDto> getAvailableCoursesById(Integer studentId) {
+    public List<CourseDto> getAvailableCoursesById(Integer studentId, String term) {
         String listOfPassedCourses = getListOfPassedCourses(studentId);
 
-        return CourseDto.mapEntitiesToDtos(courseRepository.getAvailableCoursesById(listOfPassedCourses));
+        return CourseDto.mapEntitiesToDtos(courseRepository.getAvailableCoursesById(listOfPassedCourses, term));
     }
 }

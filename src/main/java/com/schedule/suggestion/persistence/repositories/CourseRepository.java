@@ -46,10 +46,12 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query(value = "SELECT c.* FROM course c " +
             "LEFT JOIN course_prerequisite cp ON cp.course_id = c.id " +
+            "LEFT JOIN course_section cs on c.id = cs.course_id " +
             "WHERE NOT FIND_IN_SET(c.id, :passedCourses) " +
+            "AND cs.term=:term " +
             "GROUP BY c.id " +
             "HAVING SUM(COALESCE(FIND_IN_SET(cp.prerequisite_course_id, :passedCourses), 0) > 0) = " +
             "COUNT(cp.prerequisite_course_id);",
             nativeQuery = true)
-    List<Course> getAvailableCoursesById(@Param("passedCourses") String passedCourses);
+    List<Course> getAvailableCoursesById(@Param("passedCourses") String passedCourses, @Param("term") String term);
 }

@@ -83,8 +83,9 @@ public class ScheduleSuggestionController {
         return scheduleSuggestionService.generateSchedule(studentId, criteria);
     }
 
-    @RequestMapping(path = "/available/{studentId}", method = RequestMethod.GET)
-    public List<CourseDto> getAvailableCoursesById(@PathVariable Integer studentId) {
-        return scheduleSuggestionService.getAvailableCoursesById(studentId);
+    @RequestMapping(path = "/available/{term}/{studentId}", method = RequestMethod.GET)
+    public List<CourseDto> getAvailableCoursesById(@PathVariable Integer studentId,
+                                                   @PathVariable String term) {
+        return scheduleSuggestionService.getAvailableCoursesById(studentId, term);
     }
 }
