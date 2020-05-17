@@ -78,7 +78,7 @@ public class ScheduleSuggestionController {
     }
 
     @RequestMapping(path = "/generate/{studentId}", method = RequestMethod.POST)
-    public List<CourseSectionDto> generateSchedule(@PathVariable Integer studentId,
+    public ScheduleSuggestionResponseDto generateSchedule(@PathVariable Integer studentId,
                                                    @RequestBody ScheduleSuggestionCriteria criteria) {
         return scheduleSuggestionService.generateSchedule(studentId, criteria);
     }

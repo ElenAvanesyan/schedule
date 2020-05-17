@@ -16,6 +16,8 @@ public class CourseSectionDto {
     private LocalTime startTime;
     private LocalTime endTime;
     private Integer courseId;
+    private String courseNumber;
+    private String title;
 
     public Integer getId() {
         return id;
@@ -81,6 +83,22 @@ public class CourseSectionDto {
         this.courseId = courseId;
     }
 
+    public String getCourseNumber() {
+        return courseNumber;
+    }
+
+    public void setCourseNumber(String courseNumber) {
+        this.courseNumber = courseNumber;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public static CourseSectionDto mapEntityToDto(CourseSection entity) {
         if (entity == null) {
             return null;
@@ -95,6 +113,8 @@ public class CourseSectionDto {
         dto.setStartTime(entity.getStartTime());
         dto.setEndTime(entity.getEndTime());
         dto.setCourseId(entity.getCourseId());
+        dto.setCourseNumber(entity.getCourseNumber());
+        dto.setTitle(entity.getCourseTitle());
 
         return dto;
     }

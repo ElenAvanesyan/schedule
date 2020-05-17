@@ -5,6 +5,7 @@ import com.schedule.suggestion.persistence.repositories.StudentRepository;
 import com.schedule.suggestion.service.dto.CourseCategoryDto;
 import com.schedule.suggestion.service.dto.CourseDto;
 import com.schedule.suggestion.service.dto.CourseSectionDto;
+import com.schedule.suggestion.service.dto.ScheduleSuggestionResponseDto;
 import com.schedule.suggestion.service.model.ScheduleSuggestionCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class ScheduleSuggestionService {
 
     // @TODO: Add a function to track the year of study
 
-    public List<CourseSectionDto> generateSchedule(Integer studentId, ScheduleSuggestionCriteria criteria) {
+    public ScheduleSuggestionResponseDto generateSchedule(Integer studentId, ScheduleSuggestionCriteria criteria) {
         Integer numberOfCore = criteria.getNumberOfCore();
         Integer numberOfGenEd = criteria.getNumberOfGenEd();
         Integer numberOfTrack= criteria.getNumberOfTrack();
@@ -201,7 +202,11 @@ public class ScheduleSuggestionService {
                     scheduleSizeWithCoreAndTrackCourses, schedule, timeSlots);
         }
 
-        return schedule;
+        ScheduleSuggestionResponseDto generatedSchedule = new ScheduleSuggestionResponseDto();
+        generatedSchedule.setListOfCourseSection(schedule);
+        generatedSchedule.setListOfMessages(messages);
+
+        return generatedSchedule;
     }
 
     private void addCourseToSchedule(List<CourseSectionDto> schedule, Map<String, List<CourseSectionDto>> timeSlots, List<CourseDto> availableCourses) {
