@@ -1,12 +1,11 @@
 package com.schedule.suggestion.controller;
 
+import com.schedule.suggestion.persistence.entity.Professor;
 import com.schedule.suggestion.service.CourseService;
+import com.schedule.suggestion.service.ProfessorService;
 import com.schedule.suggestion.service.ScheduleSuggestionService;
 import com.schedule.suggestion.service.StudentService;
-import com.schedule.suggestion.service.dto.AuthenticationDto;
-import com.schedule.suggestion.service.dto.CourseDto;
-import com.schedule.suggestion.service.dto.CourseSectionDto;
-import com.schedule.suggestion.service.dto.StudentDto;
+import com.schedule.suggestion.service.dto.*;
 import com.schedule.suggestion.service.model.ScheduleSuggestionCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +20,15 @@ import java.util.List;
 public class ScheduleSuggestionController {
     private final CourseService courseService;
     private final StudentService studentService;
+    private final ProfessorService professorService;
     private final ScheduleSuggestionService scheduleSuggestionService;
 
     @Autowired
     public ScheduleSuggestionController(CourseService courseService, StudentService studentService,
-                                        ScheduleSuggestionService scheduleSuggestionService) {
+                                        ProfessorService professorService, ScheduleSuggestionService scheduleSuggestionService) {
         this.courseService = courseService;
         this.studentService = studentService;
+        this.professorService = professorService;
         this.scheduleSuggestionService = scheduleSuggestionService;
     }
 
@@ -54,6 +55,11 @@ public class ScheduleSuggestionController {
     @RequestMapping(path = "/student/authenticate", method = RequestMethod.POST)
     public StudentDto authenticateStudent(@RequestBody AuthenticationDto authenticationDto) {
         return studentService.authenticateStudent(authenticationDto);
+    }
+
+    @RequestMapping(path = "/professor/authenticate", method = RequestMethod.POST)
+    public ProfessorDto authenticateProfessor(@RequestBody AuthenticationDto authenticationDto) {
+        return professorService.authenticateProfessor(authenticationDto);
     }
 
     @RequestMapping(path = "/student/{studentId}", method = RequestMethod.GET)
