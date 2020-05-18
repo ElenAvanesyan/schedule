@@ -32,8 +32,6 @@ public class ScheduleSuggestionService {
         this.studentRepository = studentRepository;
     }
 
-    // @TODO: Add a function to track the year of study
-
     public ScheduleSuggestionResponseDto generateSchedule(Integer studentId, ScheduleSuggestionCriteria criteria) {
         Integer numberOfCore = criteria.getNumberOfCore();
         Integer numberOfGenEd = criteria.getNumberOfGenEd();
@@ -221,6 +219,9 @@ public class ScheduleSuggestionService {
         List<CourseDto> minimumPriorityCourses = getCoursesByPriority(listOfCourse, numberOfCourse);
 
         for (CourseDto course: minimumPriorityCourses) {
+            if (schedule.size() == numberOfCourse) {
+                break;
+            }
             // if only one section add it to the schedule and remove the time slot of that section from time slots
             if (course.getFilteredCourseSections().size() == 1) {
                 CourseSectionDto section = course.getFilteredCourseSections().stream().findFirst().get();

@@ -4,8 +4,8 @@ import java.time.LocalTime;
 
 public class ScheduleSuggestionCriteria {
     private String term;
-    private LocalTime preferredStartTime;
-    private LocalTime preferredEndTime;
+    private String preferredStartTime;
+    private String preferredEndTime;
     private String preferredDays;
     private Integer numberOfCore;
     private Integer numberOfGenEd;
@@ -22,20 +22,13 @@ public class ScheduleSuggestionCriteria {
     }
 
     public LocalTime getPreferredStartTime() {
-        return preferredStartTime;
-    }
-
-    public void setPreferredStartTime(LocalTime preferredStartTime) {
-        this.preferredStartTime = preferredStartTime;
+        return LocalTime.parse(preferredStartTime);
     }
 
     public LocalTime getPreferredEndTime() {
-        return preferredEndTime;
+        return LocalTime.parse(preferredEndTime);
     }
 
-    public void setPreferredEndTime(LocalTime preferredEndTime) {
-        this.preferredEndTime = preferredEndTime;
-    }
 
     public String getPreferredDays() {
         return preferredDays;

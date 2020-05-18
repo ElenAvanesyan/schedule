@@ -79,7 +79,7 @@ public class ScheduleSuggestionController {
 
     @RequestMapping(path = "/generate/{studentId}", method = RequestMethod.POST)
     public ScheduleSuggestionResponseDto generateSchedule(@PathVariable Integer studentId,
-                                                   @RequestBody ScheduleSuggestionCriteria criteria) {
+                                                          @RequestBody ScheduleSuggestionCriteria criteria) {
         return scheduleSuggestionService.generateSchedule(studentId, criteria);
     }
 
