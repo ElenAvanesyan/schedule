@@ -10,6 +10,8 @@ import com.schedule.suggestion.service.model.ScheduleSuggestionCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalTime;
 import java.util.Map.Entry;
 
 import java.util.*;
@@ -199,6 +201,11 @@ public class ScheduleSuggestionService {
             addGenEdCoursesToSchedule(listOfGenEdCourse, numberOfGenEd, studentId, 
                     scheduleSizeWithCoreAndTrackCourses, schedule, timeSlots);
         }
+
+        Comparator<CourseSectionDto> timeComparator = Comparator.comparing(e -> e.getStartTime().toString());
+        Comparator<CourseSectionDto> dayComparator = Comparator.comparing(CourseSectionDto::getWeekDays);
+
+        Collections.sort(schedule, dayComparator.thenComparing(timeComparator));
 
         ScheduleSuggestionResponseDto generatedSchedule = new ScheduleSuggestionResponseDto();
         generatedSchedule.setListOfCourseSection(schedule);
