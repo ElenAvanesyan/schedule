@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalTime;
 import java.util.Map.Entry;
 
 import java.util.*;
@@ -197,9 +196,11 @@ public class ScheduleSuggestionService {
             }
         }
 
+        Integer scheduleSizeWithoutGenEdCourses = schedule.size();
+
         if (numberOfGenEd != null && numberOfGenEd > 0) {
-            addGenEdCoursesToSchedule(listOfGenEdCourse, numberOfGenEd, studentId, 
-                    scheduleSizeWithCoreAndTrackCourses, schedule, timeSlots);
+            addGenEdCoursesToSchedule(listOfGenEdCourse, numberOfGenEd, studentId,
+                    scheduleSizeWithoutGenEdCourses, schedule, timeSlots);
         }
 
         Comparator<CourseSectionDto> timeComparator = Comparator.comparing(e -> e.getStartTime().toString());
