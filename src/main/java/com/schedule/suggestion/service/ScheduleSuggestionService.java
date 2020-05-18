@@ -147,7 +147,7 @@ public class ScheduleSuggestionService {
         // Add track courses to schedule
         if (numberOfTrack != null && numberOfTrack > 0) {
             if (listOfTrackRequiredCourse.isEmpty() && listOfTrackElectiveCourse.isEmpty()) {
-                messages.add("No track course available");
+                messages.add("No track course is available");
             }
 
             if (!listOfTrackRequiredCourse.isEmpty() && listOfTrackRequiredCourse.size() >= numberOfTrack) {
@@ -164,7 +164,7 @@ public class ScheduleSuggestionService {
                         fitCourseToTimeSlot(schedule, timeSlots, course);
                     }
                 } else {
-                    messages.add("Not enough available track courses");
+                    messages.add("There are no enough available track courses");
                 }
             }
 
@@ -183,13 +183,13 @@ public class ScheduleSuggestionService {
         }
 
         if (!listOfFndCourse.isEmpty() && !criteria.getIsFoundationChecked()) {
-            messages.add("Foundation course needs to be passed");
+            messages.add("You have 1 available foundation course you need to pass");
         }
 
         // Add foundation courses to schedule
         if (criteria.getIsFoundationChecked()) {
             if (listOfFndCourse.isEmpty()) {
-                messages.add("No foundation course available");
+                messages.add("No foundation course is available");
             } else {
                 for (CourseDto course : listOfFndCourse) {
                     fitCourseToTimeSlot(schedule, timeSlots, course);
